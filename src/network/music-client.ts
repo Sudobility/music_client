@@ -28,6 +28,8 @@ export type NativeUploadFile = {
 
 export type UploadableFile = File | Blob | NativeUploadFile;
 import type {
+  AlignLyricsRequest,
+  AlignLyricsResponse,
   ApiResponse,
   CreateGenerationJobRequest,
   GenerateScoreRequest,
@@ -203,6 +205,29 @@ export class MusicClient {
       token,
       ...(signal ? { signal } : {}),
     });
+  }
+
+  /**
+   * Writes a line of lyrics onto a project's melody, server-side and
+   * synchronously, returning the new score to adopt — not a queued job, because
+   * nothing is modelled: the words are given and the server only distributes
+   * them. A 409 means the project is mid-generation and the write was refused.
+   */
+  alignLyrics(
+    projectId: string,
+    req: AlignLyricsRequest,
+    token: string,
+    signal?: AbortSignal
+  ): Promise<AlignLyricsResponse> {
+    return this.request<AlignLyricsResponse>(
+      `/projects/${encodeURIComponent(projectId)}/lyrics/align`,
+      {
+        method: 'POST',
+        body: req,
+        token,
+        ...(signal ? { signal } : {}),
+      }
+    );
   }
 
   // -- Generation jobs -------------------------------------------------------
