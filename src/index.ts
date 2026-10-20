@@ -77,6 +77,7 @@ export {
   type UseProjectsOptions,
 } from './hooks/use-projects';
 export { useSiteAdmin } from './hooks/use-site-admin';
+export { useReviewFlags, type ReviewFlags } from './hooks/use-review-flags';
 export {
   useDeleteAvatar,
   useProfile,

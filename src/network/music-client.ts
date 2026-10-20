@@ -47,8 +47,10 @@ import type {
   ProjectSummary,
   ProjectUpdateRequest,
   CommunityItem,
+  FlagReason,
   PublishedSnapshot,
   Snapshot,
+  SnapshotFlag,
   SnapshotSummary,
   RegenerateRegionRequest,
   RegenerateRegionResult,
@@ -506,6 +508,46 @@ export class MusicClient {
 
   lastPublisherName(token: string): Promise<{ publisherName: string | null }> {
     return this.request<{ publisherName: string | null }>('/snapshots/publisher-name', { token });
+  }
+
+  // -- Flags -------------------------------------------------------------------
+
+  /**
+   * Reports a shared snapshot. Requires a token — a report has a reporter, so a
+   * visitor is asked to sign in first. `details` must contain some text.
+   */
+  flagSnapshot(
+    publicId: string,
+    reason: FlagReason,
+    details: string,
+    token: string
+  ): Promise<{ ok: boolean }> {
+    return this.request<{ ok: boolean }>('/flags', {
+      method: 'POST',
+      body: { publicId, reason, details },
+      token,
+    });
+  }
+
+  /** The site-admin review queue: submitted flags only. Admin-gated server side. */
+  listFlags(token: string): Promise<SnapshotFlag[]> {
+    return this.request<SnapshotFlag[]>('/flags', { token });
+  }
+
+  /** Dismiss a flag; the snapshot is untouched. Admin-gated server side. */
+  rejectFlag(id: string, token: string): Promise<SnapshotFlag> {
+    return this.request<SnapshotFlag>(`/flags/${encodeURIComponent(id)}/reject`, {
+      method: 'POST',
+      token,
+    });
+  }
+
+  /** Uphold a flag; the snapshot leaves the Community. Admin-gated server side. */
+  confirmFlag(id: string, token: string): Promise<SnapshotFlag> {
+    return this.request<SnapshotFlag>(`/flags/${encodeURIComponent(id)}/confirm`, {
+      method: 'POST',
+      token,
+    });
   }
 
   // -- Public (no token: a visitor has none) -----------------------------------

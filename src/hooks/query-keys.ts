@@ -27,6 +27,11 @@ export const musicQueryKeys = {
     /** The name this account last published under — per account, not per project. */
     publisherName: (userId?: string | null) => ['music', 'snapshots', 'publisher-name', userId ?? ''] as const,
   },
+  flags: {
+    all: ['music', 'flags'] as const,
+    /** The site-admin review queue, keyed by admin so one session's answer is not read for another. */
+    list: (userId?: string | null) => ['music', 'flags', 'list', userId ?? ''] as const,
+  },
   /**
    * Per account: keyed by user id so one account's answer is never read back
    * for the next one signed in on the same device.
