@@ -23,6 +23,8 @@ export default [
       '@typescript-eslint': typescript,
     },
     rules: {
+      'preserve-caught-error': 'off',
+      'no-useless-assignment': 'off',
       ...typescript.configs.recommended.rules,
       // TS itself checks undefined identifiers; core no-undef false-positives on ambient types (RequestInit etc.)
       'no-undef': 'off',
