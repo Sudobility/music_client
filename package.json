@@ -1,6 +1,6 @@
 {
   "name": "@sudobility/music_client",
-  "version": "0.4.101",
+  "version": "0.4.102",
   "description": "Typed network client + React Query hooks for the ScoreSmith music_api",
   "type": "module",
   "main": "./dist/index.js",
@@ -13,7 +13,7 @@
     }
   },
   "scripts": {
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && node scripts/fix-esm-imports.mjs",
     "clean": "rimraf dist",
     "test:unit": "vitest run",
     "test:watch": "vitest",
@@ -35,16 +35,16 @@
   "author": "Sudobility",
   "license": "BUSL-1.1",
   "peerDependencies": {
-    "@sudobility/di": "^1.5.83",
-    "@sudobility/music_types": "^0.13.59",
-    "@sudobility/types": "^1.9.76",
+    "@sudobility/di": "^1.5.84",
+    "@sudobility/music_types": "^0.13.60",
+    "@sudobility/types": "^1.9.78",
     "@tanstack/react-query": ">=5",
     "react": ">=18"
   },
   "devDependencies": {
     "@eslint/js": "~10.0.1",
-    "@sudobility/music_types": "^0.13.59",
-    "@sudobility/types": "^1.9.76",
+    "@sudobility/music_types": "^0.13.60",
+    "@sudobility/types": "^1.9.78",
     "@tanstack/react-query": "~5.104.5",
     "@testing-library/react": "~16.3.3",
     "@types/node": "~26.6.5",
