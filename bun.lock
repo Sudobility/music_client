@@ -6,7 +6,7 @@
       "name": "@sudobility/music_client",
       "devDependencies": {
         "@eslint/js": "~10.0.1",
-        "@sudobility/music_types": "^0.13.61",
+        "@sudobility/music_types": "^0.13.62",
         "@sudobility/types": "^1.9.78",
         "@tanstack/react-query": "~5.104.5",
         "@testing-library/react": "~16.3.3",
@@ -29,7 +29,7 @@
       },
       "peerDependencies": {
         "@sudobility/di": "^1.5.85",
-        "@sudobility/music_types": "^0.13.61",
+        "@sudobility/music_types": "^0.13.62",
         "@sudobility/types": "^1.9.78",
         "@tanstack/react-query": ">=5",
         "react": ">=18",
@@ -343,7 +343,7 @@
 
     "@sudobility/di": ["@sudobility/di@1.5.79", "https://npm.pkg.github.com/download/@sudobility/di/1.5.79/1035c3304c3dc33d7b5b38b38ba6d6fe8c3dbd60", { "peerDependencies": { "@notifee/react-native": ">=7.0.0", "@react-native-async-storage/async-storage": ">=1.19.0", "@react-native-community/netinfo": ">=9.0.0", "@react-native-firebase/analytics": ">=18.0.0", "@react-native-firebase/app": ">=18.0.0", "@react-native-firebase/messaging": ">=18.0.0", "@sudobility/types": "^1.9.76", "firebase": ">=11.0.0", "react": ">=18.0.0", "react-native": ">=0.70.0" } }, "sha512-2y+YqxNN7lhrbtwKGPKemf/jOJ7RKj8Jm3+9cnSKtiaRf7M2MIEiXQCsF1pF2M6SerzwsUfFbYDVQkfl6qWbzA=="],
 
-    "@sudobility/music_types": ["@sudobility/music_types@0.13.61", "https://npm.pkg.github.com/download/@sudobility/music_types/0.13.61/3b8db38ac4c8e7fdd0af2786a6e5c580ce72c517", { "peerDependencies": { "@sudobility/types": "^1.9.78", "immer": "^10.0.0 || ^11.0.0", "zod": "^4.0.0" } }, "sha512-Sl0MMJOHvWGaLV6XwMHVQ7rrtXWHlZOBvXM5SCZsjXp8QgmeIaLIOo49P8nt2Fy7584feD+H2koPyUy6yPQO4g=="],
+    "@sudobility/music_types": ["@sudobility/music_types@0.13.62", "https://npm.pkg.github.com/download/@sudobility/music_types/0.13.62/e3c2aa29657c24c3c7b1bb81762fcb22c140d1b1", { "peerDependencies": { "@sudobility/types": "^1.9.78", "immer": "^10.0.0 || ^11.0.0", "zod": "^4.0.0" } }, "sha512-JCYIggLmiXDL0CBb8yp0uewc1GcUjvZDseC6kC05qHCq8VDCGpptiM8BdPSdIFVnGQrUrqtL0XUJidCfs5dIuw=="],
 
     "@sudobility/types": ["@sudobility/types@1.9.78", "https://npm.pkg.github.com/download/@sudobility/types/1.9.78/19ca0df5ad7d490bafc1b84384a8002f5dbc29ea", {}, "sha512-W6DYMUf7D0cVVUHDv5T8YZ339Wyay6xPx0CsdfNVgHDsm1ISDLhwacUwlM9xnvwXHGuAhP77wRVVo3uKGZe46Q=="],
 
