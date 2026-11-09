@@ -1,7 +1,7 @@
 # @sudobility/music_client
 
 > **Git policy — never auto-commit or auto-push.** Leave your work in the working
-> tree. Run `git commit`, `git push`, `gh pr create` or `scripts/push_all.sh`
+> tree. Run `git commit`, `git push` or `gh pr create`
 > **only when the user explicitly asks in that turn** — and **do not use feature
 > branches; always stay on the current branch**. Approval for an earlier change
 > does not carry forward, and finishing a task is not permission to commit it.
@@ -29,7 +29,12 @@ music_types'.
 
 ## Commands
 
-`bun install` · `bun run verify` (typecheck+lint+test+build) · `bun run test`
+`bun install` · `bun run verify` (typecheck → lint → `test:unit` → build, same gate
+as CI/`prepublishOnly`) · `bun run test:unit` (vitest once) · `bun run test:watch`
+(vitest watch) · `bun run build` (tsc typecheck + `vite build` → `dist/index.js` +
+`fix-esm-imports.mjs`). There is **no** `test` script — `bun run test` falls through to
+bun's own runner, not vitest. Installs resolve `@sudobility/*` from GitHub Packages
+(see `.npmrc`), so a `GH_PACKAGES_READ_TOKEN`-backed `~/.npmrc` auth line is needed.
 
 ## Architecture
 
