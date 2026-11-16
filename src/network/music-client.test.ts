@@ -4,7 +4,6 @@
  */
 import { describe, expect, it } from 'vitest';
 import type { NetworkClient, NetworkRequestOptions, NetworkResponse } from '@sudobility/types';
-import type { ApiResponse } from '@sudobility/music_types';
 import { MusicClient } from './music-client';
 import {
   AiOutputInvalidError,
@@ -16,8 +15,15 @@ import {
 
 type Recorded = { url: string; options: NetworkRequestOptions | undefined };
 
+/**
+ * A response envelope as a fixture. Looser than the canonical
+ * `BaseResponse` (no required `timestamp`) because the client reads only
+ * `success`/`data`/`error` — the timestamp is write-side and irrelevant here.
+ */
+type FakeEnvelope = { success: boolean; data?: unknown; error?: string };
+
 function fakeNetwork(
-  body: ApiResponse<unknown>,
+  body: FakeEnvelope,
   status = 200
 ): { client: NetworkClient; calls: Recorded[] } {
   const calls: Recorded[] = [];
@@ -146,7 +152,7 @@ describe('MusicClient request shapes', () => {
 describe('MusicClient error mapping', () => {
   it('maps QUOTA_EXCEEDED to QuotaExceededError', async () => {
     const { client } = fakeNetwork(
-      { success: false, error: 'limit', code: 'QUOTA_EXCEEDED' },
+      { success: false, error: 'limit' },
       429
     );
     await expect(
@@ -159,7 +165,7 @@ describe('MusicClient error mapping', () => {
 
   it('maps AI_OUTPUT_INVALID to AiOutputInvalidError', async () => {
     const { client } = fakeNetwork(
-      { success: false, error: 'bad model output', code: 'AI_OUTPUT_INVALID' },
+      { success: false, error: 'bad model output' },
       502
     );
     await expect(
@@ -172,7 +178,7 @@ describe('MusicClient error mapping', () => {
 
   it('maps PROJECT_NOT_FOUND (and bare 404s) to ProjectNotFoundError', async () => {
     const { client } = fakeNetwork(
-      { success: false, error: 'nope', code: 'PROJECT_NOT_FOUND' },
+      { success: false, error: 'nope' },
       404
     );
     await expect(new MusicClient(client, BASE).getProject('x', 't')).rejects.toBeInstanceOf(
@@ -409,7 +415,7 @@ describe('payment required', () => {
     // Its own class because it is the one failure with a remedy: the UI sells
     // credits instead of reporting a network problem.
     const { client } = fakeNetwork(
-      { success: false, error: 'Not enough credits.', code: 'INSUFFICIENT_CREDITS' },
+      { success: false, error: 'Not enough credits.' },
       402
     );
     await expect(
@@ -587,7 +593,7 @@ describe('MusicClient profile', () => {
 
   it('surfaces a refused picture as an ApiError carrying the status', async () => {
     const { client } = fakeNetwork(
-      { success: false, error: 'Too large.', code: 'AVATAR_TOO_LARGE' },
+      { success: false, error: 'Too large.' },
       413
     );
     const failure = await new MusicClient(client, BASE)

@@ -22,7 +22,7 @@ export type FakeCall = {
   body: unknown;
 };
 
-export type FakeReply = { status?: number; data?: unknown; error?: string; code?: string };
+export type FakeReply = { status?: number; data?: unknown; error?: string };
 
 export type FakeRoute = (call: FakeCall) => FakeReply | Promise<FakeReply>;
 
@@ -74,7 +74,7 @@ export function fakeServer(routes: Record<string, FakeRoute>): {
       headers: {},
       data: (ok
         ? { success: true, data: reply.data }
-        : { success: false, error: reply.error ?? 'failed', code: reply.code }) as T,
+        : { success: false, error: reply.error ?? 'failed' }) as T,
     } as NetworkResponse<T>;
   };
   return {

@@ -4,7 +4,7 @@
  * through one private `request<T>()` funnel, bearer token passed per call
  * (never stored), envelope unwrapping and typed-error mapping in one place.
  */
-import type { NetworkClient } from '@sudobility/types';
+import type { ApiResponse, NetworkClient } from '@sudobility/types';
 
 /**
  * A file on its way to the server, in whichever form the platform can offer.
@@ -30,7 +30,6 @@ export type UploadableFile = File | Blob | NativeUploadFile;
 import type {
   AlignLyricsRequest,
   AlignLyricsResponse,
-  ApiResponse,
   CreateGenerationJobRequest,
   GenerateScoreRequest,
   GenerateScoreResult,
@@ -63,7 +62,6 @@ import {
   generateScoreStyleSettingsResponseSchema,
 } from '@sudobility/music_types';
 import {
-  AiGenerationError,
   AiOutputInvalidError,
   ApiError,
   ProjectNotFoundError,
@@ -606,23 +604,28 @@ export class MusicClient {
   }
 }
 
+/**
+ * Maps a failed response to a typed error by HTTP status.
+ *
+ * The envelope no longer carries a typed `code` (it is the canonical
+ * `@sudobility/types` shape now), so the status is the whole of what
+ * distinguishes one failure from another: 402 no credits, 429 over quota, 404
+ * missing, 502 the model's own output rejected. Everything else is a plain
+ * `ApiError` carrying the status, which `isInsufficientCredits` still reads a
+ * bare 402 out of.
+ */
 function mapError(status: number, envelope: ApiResponse<unknown> | undefined): Error {
   const message = envelope?.error ?? `Request failed with status ${status}`;
-  switch (envelope?.code) {
-    case 'QUOTA_EXCEEDED':
-      return new QuotaExceededError(message);
-    case 'AI_OUTPUT_INVALID':
-      return new AiOutputInvalidError(message);
-    case 'AI_GENERATION_FAILED':
-      return new AiGenerationError(message);
-    case 'PROJECT_NOT_FOUND':
-      return new ProjectNotFoundError(message);
-    case 'INSUFFICIENT_CREDITS':
+  switch (status) {
+    case 402:
       return new InsufficientCreditsError(message);
+    case 429:
+      return new QuotaExceededError(message);
+    case 404:
+      return new ProjectNotFoundError(message);
+    case 502:
+      return new AiOutputInvalidError(message);
     default:
-      if (status === 402) return new InsufficientCreditsError(message);
-      if (status === 429) return new QuotaExceededError(message);
-      if (status === 404) return new ProjectNotFoundError(message);
       return new ApiError(message, status);
   }
 }
